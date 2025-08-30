@@ -9,6 +9,11 @@ package chess;
 public class ChessBoard 
 {
 
+    private int maxSize = 8;
+    private int maxPieces = 32;
+    private ChessPiece[] pieces;
+
+
     public ChessBoard() 
     {
         
