@@ -1,4 +1,8 @@
 package chess;
+//import java.util.Arrays;
+
+import chess.ChessGame.TeamColor;
+import chess.ChessPiece.PieceType;
 
 /**
  * A chessboard that can hold and rearrange chess pieces.
@@ -11,8 +15,9 @@ public class ChessBoard
 
     private int maxSize = 8;
     private int maxPieces = 32;
-    private ChessPiece[] pieces;
-
+    private int numPieces = 0;
+    private ChessPiece[] pieces = new ChessPiece[maxPieces];
+    private ChessPosition[] positions = new ChessPosition[maxPieces];
 
     public ChessBoard() 
     {
@@ -27,7 +32,10 @@ public class ChessBoard
      */
     public void addPiece(ChessPosition position, ChessPiece piece) 
     {
-        throw new RuntimeException("Not implemented");
+        pieces[numPieces] = piece;
+        positions[numPieces] = position;
+        numPieces++;
+        //throw new RuntimeException("Not implemented");
     }
 
     /**
@@ -39,7 +47,15 @@ public class ChessBoard
      */
     public ChessPiece getPiece(ChessPosition position) 
     {
-        throw new RuntimeException("Not implemented");
+        for(int i = 0; i < numPieces; i++)
+        {
+            if (positions[i] == position)
+            {
+                return pieces[i];
+            }
+        }
+        return null;
+        //throw new RuntimeException("Not implemented");
     }
 
     /**
@@ -48,6 +64,40 @@ public class ChessBoard
      */
     public void resetBoard() 
     {
-        throw new RuntimeException("Not implemented");
+        PieceType[] backRowOrder = 
+        {
+            PieceType.ROOK,
+            PieceType.KNIGHT,
+            PieceType.BISHOP,
+            PieceType.QUEEN,
+            PieceType.KING,
+            PieceType.BISHOP,
+            PieceType.KNIGHT,
+            PieceType.ROOK
+        };
+
+        TeamColor team = TeamColor.WHITE;
+        for (int i = 0; i < 2; i++)
+        {
+            int row = 0;
+            int pawnRow = 1;
+            if(team == TeamColor.BLACK)
+            {
+                row = 7;
+                pawnRow = 6;
+            }
+
+            for (int col = 0; col < 8; col++) 
+            {
+                addPiece(new ChessPosition(pawnRow, col), new ChessPiece(team, PieceType.PAWN));
+            }
+
+            for (int col = 0; col < backRowOrder.length; col++) 
+            {
+                addPiece(new ChessPosition(row, col), new ChessPiece(team, backRowOrder[col]));
+            }
+            team = TeamColor.BLACK;
+        }
+        //throw new RuntimeException("Not implemented");
     }
 }
